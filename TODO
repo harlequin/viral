@@ -1,0 +1,30 @@
+* search ixirc better interface 
+***[2017/04/21 08:04:04] [DEBUG] src/networks.c:507: [DUMP] Event "NOTICE", origin: "[MG]-REQ|EU|S|kraut", params: 2 [xpharlequin|** All Slots Full, Added you to the main queue for pack 302 ("Planet.Erde.II-Eine.Erde.viele.Welten.S01E04.Dschungel.German.DL.DOKU.720p.BluRay.x264-TV4A.mkv") in position 29. To Remove yourself at a later time type "/MSG [MG]-REQ|EU|S|kraut XDCC REMOVE".]
+
+
+*** Implement caching for img from themoviedb
+***** via option in config file
+
+*** housekeeping
+***** update tv shows
+***** create folders if not existing
+***** rebuild playlists
+
+*** Answer to DCC VERSION request
+*** Disconnect after successful download from server when no more downloads for this server existing
+*** Implement cancel download
+*** "/MSG [MG]-TV|EU|S|SAy XDCC REMOVE"
+*** When a download is active send dcc remove to server and delete than
+*** When a download is aborted by ctrl+c shutdown state will be 9 for download
+    Look if state can be set to 0 in case that the user abort application
+*** Implement idle mode for servers when no downloads are active
+*** [PRIO LOW] Passive dcc support has to be implemented			   
+			   
+darkharlequin|*** You were forced to join #search
+			   
+*** After disconnect from server the channels are still marked as connected and therefore the xdcc send request will performed			   
+*** when viral was executed as root and then under normal user it's crashing after adding download
+
+
+DONE
+*** Transfer speed implemented, for every single transfer

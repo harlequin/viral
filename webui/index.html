@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>viral</title>		
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/jquery.dynatable.css" rel="stylesheet">
+		<!-- <link href="css/bootstrap-theme.css" rel="stylesheet">  -->
+		<link href="css/viral.css" rel="stylesheet">
+		<script src="js/jquery.min.js"></script>
+	</head>
+	<body>
+		
+   <div class="container-fluid">
+      <!-- Static navbar -->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+     <div class="container-fluid">
+          <!-- navbar header section -->
+          <div class="navbar-header">
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand" href="#"><img src="favicon-32x32.png" alt="viral"/></a>
+          </div>
+          
+  <!-- navbar menu section -->
+  <div class="collapse navbar-collapse navbar-responsive-collapse">
+    <ul class="nav navbar-nav" id="viral-nav">
+    	<li ><a data-toggle="tab" href="#series-tab" href="">Series</a></li>
+      	<li class="active"><a data-toggle="tab" href="#downloads-tab">Downloads</a></li>
+      	<li ><a data-toggle="tab" href="#search-tab" href="">Search</a></li>
+      	<li><a data-toggle="tab" href="#logs-tab">Log</a></li>
+      	<!--  // -->
+      	<li class="hidden"><a href="#series-details-tab" data-toggle="tab" >Extra</a></li>
+    </ul>
+        
+    <ul class="nav navbar-nav navbar-right">
+      <li>
+        <form class="navbar-form navbar-right" role="search" id="search-form">
+      <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="search-text">
+          <div class="input-group-btn">
+            <button class="btn btn-success" type="submit" id="search-button"><i class="glyphicon glyphicon-search"></i></button>
+          </div>
+        </div>
+       </form>
+      </li>      
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		<span class="glyphicon glyphicon-th"></span>
+		<b class="caret"></b></a>
+        <ul class="dropdown-menu">          
+		  <li><a id="manual_post_process">Manual Post-Processing</a></li>
+          <li><a id="shutdown">Shutdown</a></li>		  
+        </ul>
+      </li>
+      
+    </ul>
+    
+    
+	
+
+        
+  </div>
+</nav>
+      
+    
+
+	<div class="tab-content" id="tab-content">
+
+		<div id="downloads-tab" class="jumbotron tab-pane fade in active">
+			<p>Downloads</p>
+
+			<p><button type="button" class="btn btn-primary" id="download_add">Add Download</button><p>
+			<table id="downloads-table" class="table table-hover">
+				<thead>
+				<tr>
+				<th>Id</th>
+				<th>Status</th>
+				<th>Error</th>
+				<th width="170px">Server</th>
+				<th width="170px" class="text-center">Channel</th>
+				<th width="230px" class="text-center">Bot</th>
+				<th>Package</th>
+				<th>Name</th>
+				<th>Current</th>
+				<th>Total</th>
+				<th>Progress</th>
+				<th>Speed</th>
+				<th>Action</th>
+				</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+		
+		
+		<div id="log-tab" class="jumbotron tab-pane fade in">
+			<p>Log</p>			
+			<table id="logs-table" class="table table-hover">
+				<thead>	
+				<tr>			
+					<th>Level</th>
+					<th>Data</th>
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		
+		<div id="search-tab" class="tab-pane fade in">
+			<div class="container-fluid">
+				<div class="row">	
+					<ul id="search-table" style="list-style:disc"></ul>
+				</div>
+			</div>	
+		
+		<!-- 
+			<table id="search-table" class="table table-hover">
+				<thead>	
+				<tr>			
+					<th>Name</th>
+					<th>naddr</th>
+					<th>nport</th>
+					<th>cname</th>
+					<th>uname</th>
+					<th>szf</th>
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>		
+		 -->
+		</div>
+		
+		<div id="series-tab" class="tab-pane fade in">			
+			<div class="container-fluid">
+				<div class="row">	
+					<ul id="series-table" style="list-style:disc"></ul>
+				</div>
+			</div>			
+		</div>
+		
+		
+		<div id="series-details-tab" class="tab-pane fade in">
+		
+			<div class="container" id="series_container">
+		
+				<div class="row" id="series_header">
+					<div class="col-md-2">
+						<br>
+						<img id="series_cover" class="img-rounded"></img>
+					</div>
+					
+					<div class="col-md-10">				
+						<div class="row"><div style="color:white"><h1 id="series_title">hallo</h1></div></div>
+						<div class="row"><div style="color:white">Year . length . continuing . Genre</div></div>
+						<div class="row"><div style="color:white" id="series_overview">short description what the story is</div></div>
+						<div class="row"><div style="color:white">download status </div></div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-2">
+						<b style="color:white"><h2>Seasons</h2></b>					
+						<ul class="list-group" id="seasons_list"></ul>
+					</div>
+					<div class="col-md-7">
+					<b style="color:white"><h2>Episodes</h2></b>
+					
+					<table id="episode-table" class="table table-hover">
+					<thead>
+					<tr>
+					<th width="50px">Episode</th>
+					<th>Title</th>
+					<th width="50px">Status</th>					
+					</tr>
+					</thead>
+					<tbody></tbody>
+					</table>					
+					
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+			
+			</div>
+		
+		
+		</div>
+		
+	</div>
+
+
+
+
+	
+
+
+	
+
+    </div> <!-- /container -->
+
+
+<footer class="viral_footer  navbar-fixed-bottom">
+	<div class="container">
+    	
+    	<p class="text-muted" >
+    		<span><b>Version:</b></span>
+    		<span id="version-label"></span>
+    		<br>
+    	    <span><b>Date:</b></span>
+    		<span id="date-label"></span>
+    	</p>    	
+    	
+    	
+    </div>
+</footer>
+
+
+
+
+
+
+<!-- *** CONFIRMATION DIALOG *********************************************** -->
+<div class="modal fade" id="ConfirmDialog" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 id="ConfirmDialog_Title">Title</h4>
+	</div>
+	<div class="modal-body">
+		<div id="ConfirmDialog_Text">Text</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn btn-default" data-dismiss="modal" id="ConfirmDialog_Close">Cancel</a>
+		<a href="#" class="btn btn-primary" id="ConfirmDialog_OK">Action</a>
+	</div>
+	</div>
+</div>
+
+</div>
+
+<!-- *** DELETE DOWNLOAD DIALOG ******************************************** -->
+<div class="hide" id="delete-download-confirm-dialog">
+	<div id="delete-download-confirm-dialog-title">DELETE</div>
+	<div id="delete-download-confirm-dialog-text">
+		<p class="alert alert-danger">
+		Download will be deleted!
+		</p>
+	</div>
+	<div id="delete-download-confirm-dialog-ok">Delete</div>
+</div>
+
+<!-- *** SHUTDOWN DIALOG *************************************************** -->
+<div class="hide" id="shutdown-confirm-dialog">
+	<div id="shutdown-confirm-dialog-title">SHUTDOWN</div>
+	<div id="shutdown-confirm-dialog-text">
+		<p class="alert alert-danger">
+		The program will be stopped.
+		You will no longer be able to access or start it via web-interface.
+		Make sure you know how to start the program again.
+		</p>
+	</div>
+	<div id="shutdown-confirm-dialog-ok">Shutdown</div>
+</div>
+<!-- *** ADD DOWNLOADS DIALOG ************************************************ -->
+<div class="hide" id="add-irc-download-dialog">
+	<div id="add-irc-download-dialog-title">Download</div>
+	<div id="add-irc-download-dialog-text">
+		<select id="add-irc-download-dialog-server" class="form-control"></select>
+		<div class="input-group">
+			<input type="text" class="form-control" id="add-irc-download-dialog-channel">
+      		<div class="input-group-btn">
+        		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+        		<ul class="dropdown-menu" role="menu" id="channels-dropdown"></ul>
+      		</div>
+    	</div>
+		<input type="text" class="form-control" id="add-irc-download-dialog-message">
+	</div>
+	<div id="add-irc-download-dialog-ok">Submit</div>
+</div>
+<!-- *** MANUAL POST PROCESS  ************************************************ -->
+<div class="hide" id="manual-post-process-dialog">
+	<div id="manual-post-process-dialog-title">Series</div>
+	<div id="manual-post-process-dialog-text">		
+		<input type="text" class="form-control" id="manual-post-process-path" placeholder="/Data/Public/downloads">
+	</div>
+	<div id="manual-post-process-dialog-ok">Submit</div>
+</div>
+<!-- *** ADD TV SERIES DIALOG ************************************************ -->
+<div class="hide" id="add-series-dialog">
+	<div id="add-series-dialog-title">Series</div>
+	<div id="add-series-dialog-text">		
+	</div>
+	<div id="add-series-dialog-ok">Submit</div>
+</div>
+<!-- *** CONNECTION ERROR DIALOG ********************************************* -->
+<div class="hide" role="dialog" id="connection-error-dialog">
+	<div id="connection-error-dialog-title">Connection problem</div>
+	<div id="connection-error-dialog-text">
+		<p class="alert alert-danger">
+		The program facing some connection problems ...
+		</p>
+	</div> -->
+	<!-- <div id="shutdown-confirm-dialog-ok">Shutdown</div>  -->
+</div>
+
+
+		
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.dynatable.js"></script>		
+		<script src="js/rpc.js"></script>
+		<script src="js/downloads.js"></script>
+		<script src="js/logs.js"></script>
+		<script src="js/series.js"></script>
+		<script src="js/search.js"></script>
+		<script src="js/index.js"></script>
+		<script>		
+			$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			  if ( $(e.target).attr("href") == "#logs-tab" ) {
+				logs.update();  
+			  }	else if  ( $(e.target).attr("href") == "#series-tab" ) {
+				series.update(); 			  
+			  }			  
+			});		
+		</script>
+		
+	</body>
+</html>
