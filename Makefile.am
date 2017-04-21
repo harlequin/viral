@@ -34,3 +34,32 @@ viral_SOURCES = \
 	lib/slre/slre.c \
 	lib/mongoose/mongoose.c
 
+webui_FILES = \
+	webui/favicon.ico \
+	webui/favicon-32x32.png \
+	webui/index.html \
+	webui/css/bootstrap.min.css \
+	webui/css/bootstrap-theme.css \
+	webui/css/bootstrap-theme.min.css \
+	webui/css/jquery.dynatable.css \
+	webui/css/viral.css \
+	webui/fonts/glyphicons-halflings-regular.eot \
+	webui/fonts/glyphicons-halflings-regular.svg \
+	webui/fonts/glyphicons-halflings-regular.ttf \
+	webui/fonts/glyphicons-halflings-regular.woff \
+	webui/fonts/glyphicons-halflings-regular.woff2 \
+	webui/js/bootstrap.min.js \
+	webui/js/downloads.js \
+	webui/js/index.js \
+	webui/js/jquery.dynatable.js \
+	webui/js/jquery.min.js \
+	webui/js/logs.js \
+	webui/js/rpc.js \
+	webui/js/search.js \
+	webui/js/series.js
+
+	
+
+# INSTALL
+webuidir = $(datadir)/viral
+nobase_dist_webui_DATA = $(webui_FILES)
