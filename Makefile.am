@@ -58,8 +58,19 @@ webui_FILES = \
 	webui/js/search.js \
 	webui/js/series.js
 
+exampleconf_FILES = \
+	viral.conf
 	
 
 # INSTALL
+exampleconfdir = $(sysconfdir)
+dist_exampleconf_DATA = $(exampleconf_FILES)
 webuidir = $(datadir)/viral
 nobase_dist_webui_DATA = $(webui_FILES)
+#sysconfdir
+# Install configuration files into /etc
+# (only if they do not exist there to prevent override by update)
+#install-conf:
+#	$(mkinstalldirs) "$(DESTDIR)$(sysconfdir)" ; \
+#	cp "$(DESTDIR)$(exampleconfdir)/viral.conf" "$(DESTDIR)$(sysconfdir)/viral.conf" ;
+
