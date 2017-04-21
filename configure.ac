@@ -59,12 +59,20 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([dup2 gethostbyname gettimeofday inet_ntoa memchr memmove memset mkdir rmdir select socket strcasecmp strchr strcspn strdup strerror strrchr strspn strstr strtol strtoul])
 
+AC_CANONICAL_HOST
+case $host_os in
+        mingw*)
+                LIBS="-lws2_32"
+        ;;
+        *)
+        ;;
+esac
+
 
 dnl
 dnl Check for libs
 dnl
 AC_SEARCH_LIBS([pthread_create], [pthread])
-AC_SEARCH_LIBS([socket], [socket])
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

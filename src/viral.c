@@ -70,10 +70,7 @@ void download_success (struct mg_str data) {
 
 
 int main(int argc, char **argv) {
-
-	WSADATA data;
-	WSAStartup(MAKEWORD(2, 2), &data);
-
+	
 	struct mg_mgr mgr;
 
 	LOG(E_WARN, "viral %s / %s\n", BUILD_GIT_SHA, BUILD_GIT_TIME);
@@ -116,9 +113,14 @@ int main(int argc, char **argv) {
 //#else
 //	log_init("/var/log/viral.log", atoi( viral_options._log_level));
 //#endif
+
+#ifdef WIN32
 	mkdir(viral_options._complete_directory /*, S_DIRMODE*/);
 	mkdir(viral_options._incoming_directory /*, S_DIRMODE*/ );
-
+#else
+	mkdir(viral_options._complete_directory , S_DIRMODE);
+	mkdir(viral_options._incoming_directory , S_DIRMODE );
+#endif
 	downloads_queue_init();
 	mg_mgr_init(&mgr, NULL);
 
