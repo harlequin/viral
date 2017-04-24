@@ -69,10 +69,48 @@ case $host_os in
 esac
 
 
+
+
+AC_MSG_CHECKING([whether to use ssl])
+enableSSL=no
+AC_ARG_ENABLE(ssl,
+   [  --enable-ssl		Enable SSL support)],
+   [SSL="$enableval"]
+   enableSSL=yes,
+   [SSL="no"]
+)
+AC_MSG_RESULT([$SSL])
+AC_SUBST([SSL])
+
+
 dnl
 dnl Check for libs
 dnl
 AC_SEARCH_LIBS([pthread_create], [pthread])
+
+dnl
+dnl check for OpenSSL-SSL library
+dnl
+
+if test "$SSL" = "yes"; then
+   AC_CHECKING([for OpenSSL SSL Library and Header files])
+   AC_CHECK_HEADER(openssl/ssl.h,, [AC_MSG_ERROR([OpenSSL SSL headers not found.])])	
+   AC_CHECK_LIB(ssl, SSL_accept, , [AC_MSG_ERROR([sipgrep requires but cannot find ssl])])
+   AC_CHECK_LIB([crypto],[CRYPTO_new_ex_data], [], [AC_MSG_ERROR([OpenSSL libraries required])])
+
+   AC_DEFINE(USE_SSL, 1, [Use OpenSSL SSL library])
+   AC_DEFINE(MG_ENABLE_SSL, 1, [Use OpenSSL SSL library])
+fi
+
+
+
+echo
+echo $PACKAGE $VERSION
+echo
+echo Installation prefix......... : $prefix
+echo SSL/TLS..................... : $enableSSL
+echo
+
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

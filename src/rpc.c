@@ -18,6 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef HAVE_CONFIG_H
+  #include "config.h"
+#endif
+
 #include <stdarg.h>
 #include <stdlib.h>
 
@@ -989,25 +993,26 @@ void rpc_init (struct mg_mgr *mgr) {
 	uint8_t use_ssl;
 
 	use_ssl = !strcmp(viral_options._encryption,"yes") ? 1 : 0;
-	nc = mg_bind(mgr, viral_options._listening_port, ev_handler);
+
+	if (use_ssl) {
+#ifndef USE_SSL
+		LOG(E_FATAL, "SSL not support ... abort now\n");
+#else
+		struct mg_bind_opts bind_opts;
+	  	const char *err;	
+		memset(&bind_opts, 0, sizeof(bind_opts));
+		bind_opts.ssl_cert = "viral.pem";
+  		//bind_opts.ssl_key = "viral.key";
+  		bind_opts.error_string = &err;
+		nc = mg_bind_opt(mgr, viral_options._listening_port, ev_handler, bind_opts);
+#endif
+	} else {
+		nc = mg_bind(mgr, viral_options._listening_port, ev_handler);
+	}
 
 	if(!nc) {
 		LOG(E_ERROR, "Can't bind rpc interface to %s\n", viral_options._listening_port);
 		return;
-	}
-
-	if (use_ssl) {
-
-#ifdef VIRAL_ENABLE_SSL
-		ssl_result = mg_set_ssl(nc, "viral.pem", NULL);
-		if(ssl_result != NULL) {
-			LOG(E_FATAL, "%s\n", ssl_result);
-		}
-#else
-			LOG(E_FATAL, "SSL not support ... abort now\n");
-#endif
-
-
 	}
 
 	mg_set_protocol_http_websocket(nc);

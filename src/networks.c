@@ -18,6 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef HAVE_CONFIG_H
+  #include "config.h"
+#endif
 
 #include <stdio.h>
 #include <inttypes.h>
@@ -344,8 +347,8 @@ void dcc_request(struct mg_connection *nc, struct mg_str * event, struct mg_str 
 		c = mg_connect( nc->mgr , dcc_session->remote_address, dcc_handler);
 		c->user_data = dcc_session;
 		if ( dcc_session->ssl ) {
-#ifdef VIRAL_ENABLE_SSL
-			mg_set_ssl(c, NULL, NULL);
+#ifdef USE_SSL
+			//mg_set_ssl(c, NULL, NULL);
 #else
 			LOG(E_FATAL, "SSL not support ... abort now\n");
 #endif
@@ -468,18 +471,19 @@ void dcc_request(struct mg_connection *nc, struct mg_str * event, struct mg_str 
 			return;
 		}
 
-		int cmp_res = mg_vcasecmp(&action, "SSEND");
-		//if ( mg_ncasecmp(action.p, "SSEND", 5) == 0) {
-		if ( cmp_res == 0 ) {
-			dcc_session->ssl = 1;
-#ifdef VIRAL_ENABLE_SSL
-			mg_set_ssl(c, NULL, NULL);
-#else
-			LOG(E_FATAL, "SSL not support ... abort now\n");
-#endif
-		} else {
-			dcc_session->ssl = 0;
-		}
+/*TODO: Rework SSL conditionals */
+//		int cmp_res = mg_vcasecmp(&action, "SSEND");
+//		//if ( mg_ncasecmp(action.p, "SSEND", 5) == 0) {
+//		if ( cmp_res == 0 ) {
+//			dcc_session->ssl = 1;
+//#ifdef VIRAL_ENABLE_SSL
+//			mg_set_ssl(c, NULL, NULL);
+//#else
+//			LOG(E_FATAL, "SSL not support ... abort now\n");
+//#endif
+//		} else {
+//			dcc_session->ssl = 0;
+//		}
 	}
 
 	/*TODO: somehow a crash was happen here - has something to do with a dirty queue*/
@@ -719,7 +723,20 @@ void network_connect ( struct mg_mgr *mgr, irc_server_t *server ) {
 	sprintf(address, "%s:%d", server->host, server->port);
 	LOG(E_INFO, "Starting network thread for %s\n", address);
 
-	nc = mg_connect(mgr, address, irc_handler);
+
+	if ( server->encryption ) {
+#ifndef USE_SSL
+		LOG(E_ERROR, "ssl conection requested but not compiled!\n");
+		return;
+#endif
+		LOG(E_INFO, "Connection is secured (ssl) ...\n");
+		struct mg_connect_opts opts;
+		memset(&opts, 0, sizeof(opts));
+		opts.ssl_ca_cert = "*";
+		nc = mg_connect_opt(mgr, address, irc_handler, opts);
+	} else {
+		nc = mg_connect(mgr, address, irc_handler);
+	}
 
 	if(!nc) {
 		LOG(E_WARN, "Unable to connect to %s\n", address);
@@ -729,23 +746,6 @@ void network_connect ( struct mg_mgr *mgr, irc_server_t *server ) {
 	/* Add user data to nc */
 	nc->user_data = server;
 	server->nc = nc;
-
-	if ( server->encryption ){
-
-#ifdef VIRAL_ENABLE_SSL
-		ssl_result = mg_set_ssl(nc, NULL, NULL);
-		if(ssl_result){
-			LOG(E_WARN, "SSL error %s\n", ssl_result);
-		} else {
-			LOG(E_INFO, "SSL secured communication\n");
-		}
-#else
-			LOG(E_FATAL, "SSL not support ... abort now\n");
-#endif
-
-
-	}
-
 }
 
 void networks_shutdown ( void ) {
