@@ -30,43 +30,17 @@ AM_INIT_AUTOMAKE([subdir-objects foreign])
 # Checks for programs.
 AC_PROG_CC
 
-# Checks for libraries.
-
-# Checks for header files.
-AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h limits.h memory.h netdb.h netinet/in.h stddef.h stdint.h stdlib.h string.h sys/param.h sys/socket.h sys/time.h unistd.h])
-
-# Checks for typedefs, structures, and compiler characteristics.
-AC_CHECK_HEADER_STDBOOL
-AC_C_INLINE
-AC_TYPE_INT16_T
-AC_TYPE_INT32_T
-AC_TYPE_INT64_T
-AC_TYPE_INT8_T
-AC_TYPE_MODE_T
-AC_TYPE_OFF_T
-AC_TYPE_PID_T
-AC_TYPE_SIZE_T
-AC_TYPE_SSIZE_T
-AC_TYPE_UINT16_T
-AC_TYPE_UINT32_T
-AC_TYPE_UINT64_T
-AC_TYPE_UINT8_T
-
-# Checks for library functions.
-AC_FUNC_FORK
-AC_FUNC_FSEEKO
-AC_FUNC_MALLOC
-AC_FUNC_REALLOC
-AC_CHECK_FUNCS([dup2 gethostbyname gettimeofday inet_ntoa memchr memmove memset mkdir rmdir select socket strcasecmp strchr strcspn strdup strerror strrchr strspn strstr strtol strtoul])
-
 AC_CANONICAL_HOST
 case $host_os in
         mingw*)
-                LIBS="-lws2_32"
+			AC_CHECK_LIB([gdi32], [main],, AC_MSG_ERROR(lib missing))
+			AC_CHECK_LIB([ws2_32], [main],, AC_MSG_ERROR(lib missing))
         ;;
         *)
         ;;
 esac
+
+
 
 
 
@@ -82,6 +56,12 @@ AC_ARG_ENABLE(ssl,
 AC_MSG_RESULT([$SSL])
 AC_SUBST([SSL])
 
+AC_ARG_WITH([ssl], [  --with-ssl=path       specify that ssl is installed at path], [
+    if test -n "$withval"; then
+        CFLAGS="$CFLAGS -I$withval/include"
+        LDFLAGS="$LDFLAGS -L$withval/lib"
+    fi
+])
 
 dnl
 dnl Check for libs
@@ -95,8 +75,9 @@ dnl
 if test "$SSL" = "yes"; then
    AC_CHECKING([for OpenSSL SSL Library and Header files])
    AC_CHECK_HEADER(openssl/ssl.h,, [AC_MSG_ERROR([OpenSSL SSL headers not found.])])	
-   AC_CHECK_LIB(ssl, SSL_accept, , [AC_MSG_ERROR([sipgrep requires but cannot find ssl])])
    AC_CHECK_LIB([crypto],[CRYPTO_new_ex_data], [], [AC_MSG_ERROR([OpenSSL libraries required])])
+   AC_CHECK_LIB(ssl, SSL_accept, , [AC_MSG_ERROR([sipgrep requires but cannot find ssl])])
+   
 
    AC_DEFINE(USE_SSL, 1, [Use OpenSSL SSL library])
    AC_DEFINE(MG_ENABLE_SSL, 1, [Use OpenSSL SSL library])

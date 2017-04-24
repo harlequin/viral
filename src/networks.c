@@ -728,12 +728,14 @@ void network_connect ( struct mg_mgr *mgr, irc_server_t *server ) {
 #ifndef USE_SSL
 		LOG(E_ERROR, "ssl conection requested but not compiled!\n");
 		return;
-#endif
+#else
+
 		LOG(E_INFO, "Connection is secured (ssl) ...\n");
 		struct mg_connect_opts opts;
 		memset(&opts, 0, sizeof(opts));
 		opts.ssl_ca_cert = "*";
 		nc = mg_connect_opt(mgr, address, irc_handler, opts);
+#endif
 	} else {
 		nc = mg_connect(mgr, address, irc_handler);
 	}

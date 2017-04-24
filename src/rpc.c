@@ -979,7 +979,7 @@ static void ev_handler(struct mg_connection *nc, int ev, void *ev_data) {
 				mg_send(nc, buffer.buf, buffer.len);
 				nc->flags |= MG_F_SEND_AND_CLOSE;
 			} else {
-				mg_serve_http(nc, ev_data, s_http_server_opts);  /* Serve static content */
+				mg_serve_http(nc, ev_data, s_http_server_opts);  /* Serve static content */				
 			}
 		break;
 	default:
